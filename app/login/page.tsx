@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { api } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ export default function LoginPage() {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,13 +27,25 @@ export default function LoginPage() {
 
             // Affiche le message de succès
             setSuccess(true);
+            const role = response.user.role;
+
+              setTimeout(() => {
+                if (role === "CEO") {
+                    router.push("/dashboard/Ceo");
+                } else {
+                    router.push("/dashboard/manager");
+                }
+            }, 1000);
 
         } catch (err: any) {
-            setError(err.message);
+            setError(err.message || "Erreur de connexion");
         } finally {
             setLoading(false);
         }
     };
+
+
+        
 
     return (
         <div className="min-h-screen flex bg-gray-100">
@@ -138,9 +152,7 @@ export default function LoginPage() {
                         </button>
 
                     </form>
-                    <button onClick={() => window.location.href = "http://localhost:3001/quickbooks/auth"}>
-  Connect QuickBooks
-</button>
+                  
 
                     <p className="text-center text-sm text-gray-500 mt-6">
                         Pas encore de compte ?{" "}
