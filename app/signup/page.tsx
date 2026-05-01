@@ -2,8 +2,10 @@
 
 import { useState } from "react"
 import { api } from "@/lib/api"
+import { useRouter } from "next/navigation"
 
 export default function SignUpPage() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -38,6 +40,11 @@ export default function SignUpPage() {
       // Réinitialise le formulaire
       setFormData({ name: "", email: "", password: "", role: "CEO" })
 
+      // Redirection automatique après 3 secondes
+      setTimeout(() => {
+        router.push('/login')
+      }, 3000)
+
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -67,7 +74,9 @@ export default function SignUpPage() {
         {/* Success Message */}
         {success && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm">
-            ✅ Compte créé avec succès ! <a href="/login" className="font-bold underline">Se connecter</a>
+            ✅ Compte créé avec succès !<br />
+            📧 Un email de bienvenue a été envoyé à <strong>{formData.email}</strong><br />
+            <span className="text-xs">Redirection automatique vers login...</span>
           </div>
         )}
 
@@ -91,12 +100,13 @@ export default function SignUpPage() {
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="Ex: Jean Dupont"
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1">
-              Email
+              Email <span className="text-red-500">*</span>
             </label>
             <input
               type="email"
@@ -104,7 +114,11 @@ export default function SignUpPage() {
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="votre-email@exemple.com"
             />
+            <p className="text-xs text-gray-500 mt-1">
+              📧 Un email de bienvenue sera envoyé à cette adresse
+            </p>
           </div>
 
           <div>
@@ -118,6 +132,7 @@ export default function SignUpPage() {
               required
               minLength={6}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="Minimum 6 caractères"
             />
           </div>
 
@@ -137,10 +152,10 @@ export default function SignUpPage() {
 
           <button 
             type="submit"
-            disabled={loading}
-            className="w-full bg-green-700 hover:bg-green-800 text-white py-2 rounded-lg font-medium transition disabled:bg-gray-400"
+            disabled={loading || success}
+            className="w-full bg-green-700 hover:bg-green-800 text-white py-2 rounded-lg font-medium transition disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            {loading ? 'Création en cours...' : 'Créer le compte'}
+            {loading ? 'Création en cours...' : success ? 'Compte créé ✓' : 'Créer le compte'}
           </button>
 
           <p className="text-center text-sm text-gray-500">

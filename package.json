@@ -9,9 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^3.0.53",
+    "@ai-sdk/react": "^3.0.170",
     "@tremor/react": "^3.18.7",
-    "lucide-react": "^1.7.0",
+    "ai": "^6.0.168",
+    "groq-sdk": "^1.1.2",
+    "lucide-react": "^1.8.0",
     "next": "16.1.6",
+    "next-themes": "^0.4.6",
+    "openai": "^6.34.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "recharts": "^3.8.1"
