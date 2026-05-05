@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+
 
 // ── Fonction utilitaire en dehors de l'objet ──
 // Récupère le token JWT depuis localStorage
