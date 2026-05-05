@@ -38,15 +38,14 @@ export default function LoginPage() {
             const role = response.user.role;
 
             setTimeout(() => {
-                if (role === "CEO") {
-                    router.push("/dashboard/Ceo");
-                }
-                if (role === "Admin") {
-                    router.push("/dashboard/Admin");
-                } else {
-                    router.push("/dashboard/Manager");
-                }
-            }, 1000);
+    if (role === "CEO") {
+        router.push("/dashboard/Ceo");
+    } else if (role === "Admin") {
+        router.push("/dashboard/Admin");
+    } else {
+        router.push("/dashboard/Manager");
+    }
+}, 1000);
         
 
         } catch (err: any) {

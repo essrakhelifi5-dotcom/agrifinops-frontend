@@ -73,6 +73,7 @@ export default function DashboardLayout({
       ];
     }
 
+
     return [
       { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard/Ceo" },
       { icon: TrendingUp, label: "Burn vs Earn", href: "/dashboard/Ceo/burn-vs-earn" },
