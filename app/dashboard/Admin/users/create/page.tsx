@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
-import { ArrowLeft, UserPlus } from "lucide-react";
+import { UserPlus, ArrowLeft, Building2 } from "lucide-react";
 
 export default function CreateUserPage() {
   const router = useRouter();
@@ -11,7 +11,8 @@ export default function CreateUserPage() {
     name: "",
     email: "",
     password: "",
-    role: "Manager",
+    role: "CEO",
+    company: "S1",  // ✅ NOUVEAU
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -26,130 +27,134 @@ export default function CreateUserPage() {
         formData.name,
         formData.email,
         formData.password,
-        formData.role
+        formData.role,
+        formData.company,  // ✅ AJOUT
       );
+      alert("Utilisateur créé avec succès");
       router.push("/dashboard/Admin/users");
     } catch (err: any) {
-      setError(err.message || "Erreur lors de la création");
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-8 max-w-2xl mx-auto">
+      
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-6">
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4"
+          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
         >
-          <ArrowLeft size={18} />
-          <span className="text-sm">Retour</span>
+          <ArrowLeft size={20} />
+          Retour
         </button>
-        <h1 className="text-2xl font-bold text-gray-800">Créer un Utilisateur</h1>
-        <p className="text-gray-500 text-sm mt-1">BF2 : Ajouter un nouvel utilisateur au système</p>
+        <h1 className="text-2xl font-bold flex items-center gap-2">
+          <UserPlus className="text-green-700" />
+          Créer un Utilisateur
+        </h1>
       </div>
 
       {/* Formulaire */}
-      <div className="max-w-2xl">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Nom */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nom complet <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                placeholder="Ex: Ahmed Ben Salem"
-              />
-            </div>
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+            ❌ {error}
+          </div>
+        )}
 
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                placeholder="ahmed@example.com"
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          
+          {/* Nom */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Nom complet</label>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="Ex: Jean Dupont"
+            />
+          </div>
 
-            {/* Mot de passe */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Mot de passe <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="password"
-                required
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                placeholder="Minimum 6 caractères"
-                minLength={6}
-              />
-              <p className="text-xs text-gray-400 mt-1">Minimum 6 caractères</p>
-            </div>
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Email</label>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="jean@exemple.com"
+            />
+          </div>
 
-            {/* Rôle */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Rôle <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={formData.role}
-                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-              >
-                <option value="CEO">CEO (Accès complet)</option>
-                <option value="Manager">Manager (Gestion opérationnelle)</option>
-                <option value="Admin">Admin (Gestion utilisateurs)</option>
-              </select>
-              <p className="text-xs text-gray-400 mt-1">
-                {formData.role === "CEO" && "Accès à tous les dashboards et analyses"}
-                {formData.role === "Manager" && "Accès aux AR Aging et suivi des dépenses"}
-                {formData.role === "Admin" && "Gestion des utilisateurs et paramètres système"}
-              </p>
-            </div>
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Mot de passe</label>
+            <input
+              type="password"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              required
+              minLength={6}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="Minimum 6 caractères"
+            />
+          </div>
 
-            {/* Message d'erreur */}
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
+          {/* Rôle */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Rôle</label>
+            <select
+              value={formData.role}
+              onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <option value="CEO">CEO</option>
+              <option value="Manager">Manager</option>
+            </select>
+          </div>
 
-            {/* Boutons */}
-            <div className="flex items-center gap-3 pt-4">
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="px-6 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition"
-              >
-                Annuler
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="flex items-center gap-2 bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 transition disabled:opacity-50"
-              >
-                <UserPlus size={18} />
-                {loading ? "Création..." : "Créer l'utilisateur"}
-              </button>
-            </div>
-          </form>
-        </div>
+          {/* ✅ Company */}
+          <div>
+            <label className="block text-sm font-medium mb-2 flex items-center gap-2">
+              <Building2 size={16} />
+              Company
+            </label>
+            <select
+              value={formData.company}
+              onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <option value="S1">S1</option>
+              <option value="S2">S2</option>
+            </select>
+          </div>
+
+          {/* Boutons */}
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50 transition"
+            >
+              Annuler
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition disabled:bg-gray-400"
+            >
+              {loading ? 'Création...' : 'Créer Utilisateur'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { TrendingUp, Users, Database } from "lucide-react";
 
 export default function StatsPage() {
@@ -32,6 +31,22 @@ export default function StatsPage() {
     );
   }
 
+  // ✅ Données pour le graphique par rôle
+  const roleData = [
+    { role: "CEO", count: stats?.ceoCount || 0, color: "#22c55e" },
+    { role: "Manager", count: stats?.managerCount || 0, color: "#3b82f6" },
+    { role: "Admin", count: stats?.adminCount || 0, color: "#8b5cf6" },
+  ];
+
+  // ✅ Données pour le graphique par company
+  const companyData = [
+    { company: "S1", count: stats?.s1Count || 0, color: "#f59e0b" },
+    { company: "S2", count: stats?.s2Count || 0, color: "#ec4899" },
+  ];
+
+  const maxRole = Math.max(...roleData.map(d => d.count), 1);
+  const maxCompany = Math.max(...companyData.map(d => d.count), 1);
+
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <div className="mb-8">
@@ -39,19 +54,52 @@ export default function StatsPage() {
         <p className="text-gray-500 text-sm mt-1">BF6 : Vue d'ensemble du système</p>
       </div>
 
-      {/* Graphique utilisateurs par rôle */}
+      {/* ✅ Graphique Utilisateurs par Rôle */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Utilisateurs par Rôle</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={stats?.usersByRole || []}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="role" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="count" fill="#22c55e" name="Nombre d'utilisateurs" />
-          </BarChart>
-        </ResponsiveContainer>
+        <h2 className="text-lg font-semibold text-gray-800 mb-6">Utilisateurs par Rôle</h2>
+        <div className="space-y-4">
+          {roleData.map((item) => (
+            <div key={item.role} className="flex items-center gap-4">
+              <span className="text-sm font-medium text-gray-600 w-16">{item.role}</span>
+              <div className="flex-1 bg-gray-100 rounded-full h-8 relative">
+                <div
+                  className="h-8 rounded-full flex items-center justify-end pr-3 transition-all duration-500"
+                  style={{
+                    width: `${(item.count / maxRole) * 100}%`,
+                    backgroundColor: item.color,
+                    minWidth: item.count > 0 ? "2rem" : "0",
+                  }}
+                >
+                  <span className="text-white text-sm font-bold">{item.count}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ✅ Graphique Utilisateurs par Company */}
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
+        <h2 className="text-lg font-semibold text-gray-800 mb-6">Utilisateurs par Company</h2>
+        <div className="space-y-4">
+          {companyData.map((item) => (
+            <div key={item.company} className="flex items-center gap-4">
+              <span className="text-sm font-medium text-gray-600 w-16">{item.company}</span>
+              <div className="flex-1 bg-gray-100 rounded-full h-8 relative">
+                <div
+                  className="h-8 rounded-full flex items-center justify-end pr-3 transition-all duration-500"
+                  style={{
+                    width: `${(item.count / maxCompany) * 100}%`,
+                    backgroundColor: item.color,
+                    minWidth: item.count > 0 ? "2rem" : "0",
+                  }}
+                >
+                  <span className="text-white text-sm font-bold">{item.count}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Cartes stats */}
@@ -63,7 +111,7 @@ export default function StatsPage() {
             </div>
             <div>
               <p className="text-sm text-gray-500">Total Utilisateurs</p>
-              <p className="text-2xl font-bold text-gray-800">{stats?.totalUsers}</p>
+              <p className="text-2xl font-bold text-gray-800">{stats?.totalUsers || 0}</p>
             </div>
           </div>
         </div>
@@ -75,7 +123,7 @@ export default function StatsPage() {
             </div>
             <div>
               <p className="text-sm text-gray-500">Connexions QuickBooks</p>
-              <p className="text-2xl font-bold text-gray-800">{stats?.activeQBConnections}</p>
+              <p className="text-2xl font-bold text-gray-800">{stats?.activeQBConnections || 0}</p>
             </div>
           </div>
         </div>
