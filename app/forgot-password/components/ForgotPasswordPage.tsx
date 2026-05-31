@@ -2,49 +2,62 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+//ArrowLeft	Icône du bouton retour
 import { ArrowLeft, Mail, Check } from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
+  //Cette variable indique l’étape actuelle du processus.
   const [step, setStep] = useState(1); // 1: Email, 2: Code, 3: New Password
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  //Indique si une requête est en cours.
   const [loading, setLoading] = useState(false);
+  //Stocke les messages d'erreur ou de succès à afficher à l'utilisateur.
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   // ── ÉTAPE 1 : Demande de code ──
+  //Cette fonction est appelée quand l’utilisateur entre son email et clique sur “Envoyer le code”.
   const handleRequestCode = async (e: React.FormEvent) => {
+    //Empêche le formulaire de recharger la page.
     e.preventDefault();
+    //On efface les anciens messages et on démarre le chargement.
     setError("");
     setSuccess("");
     setLoading(true);
 
     try {
+      //On envoie une requête au backend pour demander un code de réinitialisation.
       const response = await fetch("http://localhost:3001/password-reset/request", {
         method: "POST",
+        //On dit au serveur que les données envoyées sont au format JSON.
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-
+      //On récupère la réponse du serveur et on la transforme en objet JavaScript.
       const data = await response.json();
-
+    //Si la réponse du serveur n’est pas bonne, on déclenche une erreur.
       if (!response.ok) {
         throw new Error(data.message || "Erreur lors de l'envoi du code");
       }
-
-      setSuccess("✅ Code envoyé ! Vérifiez votre email.");
+    //Si tout va bien, on affiche un message de succès.
+     setSuccess("✅ Code envoyé ! Vérifiez votre email.");
+     //Après 1,5 seconde, on passe à l’étape 2.
       setTimeout(() => setStep(2), 1500);
     } catch (err: any) {
+      //Si une erreur arrive, on affiche son message.
       setError(err.message);
     } finally {
+      //À la fin, on arrête le chargement.
       setLoading(false);
     }
   };
 
   // ── ÉTAPE 2 : Vérification du code ──
+  // fonction appelée quand l’utilisateur entre le code reçu par email et clique sur “Vérifier le code”.
   const handleVerifyCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -52,6 +65,7 @@ export default function ForgotPasswordPage() {
     setLoading(true);
 
     try {
+      //Elle envoie une requête POST vers :
       const response = await fetch("http://localhost:3001/password-reset/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

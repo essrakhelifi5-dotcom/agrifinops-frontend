@@ -31,14 +31,14 @@ export default function StatsPage() {
     );
   }
 
-  // ✅ Données pour le graphique par rôle
+  // Données pour le graphique par rôle
   const roleData = [
     { role: "CEO", count: stats?.ceoCount || 0, color: "#22c55e" },
     { role: "Manager", count: stats?.managerCount || 0, color: "#3b82f6" },
     { role: "Admin", count: stats?.adminCount || 0, color: "#8b5cf6" },
   ];
 
-  // ✅ Données pour le graphique par company
+  // Données pour le graphique par company
   const companyData = [
     { company: "S1", count: stats?.s1Count || 0, color: "#f59e0b" },
     { company: "S2", count: stats?.s2Count || 0, color: "#ec4899" },
@@ -54,7 +54,7 @@ export default function StatsPage() {
         <p className="text-gray-500 text-sm mt-1">BF6 : Vue d'ensemble du système</p>
       </div>
 
-      {/* ✅ Graphique Utilisateurs par Rôle */}
+      {/*  Graphique Utilisateurs par Rôle */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-6">Utilisateurs par Rôle</h2>
         <div className="space-y-4">
@@ -78,7 +78,7 @@ export default function StatsPage() {
         </div>
       </div>
 
-      {/* ✅ Graphique Utilisateurs par Company */}
+      {/*  Graphique Utilisateurs par Company */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-6">Utilisateurs par Company</h2>
         <div className="space-y-4">
@@ -121,10 +121,7 @@ export default function StatsPage() {
             <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
               <TrendingUp size={24} className="text-green-600" />
             </div>
-            <div>
-              <p className="text-sm text-gray-500">Connexions QuickBooks</p>
-              <p className="text-2xl font-bold text-gray-800">{stats?.activeQBConnections || 0}</p>
-            </div>
+            
           </div>
         </div>
 

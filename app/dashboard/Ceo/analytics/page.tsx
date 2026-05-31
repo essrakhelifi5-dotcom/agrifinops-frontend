@@ -1,21 +1,29 @@
+//role fichier :afficher les dépenses par catégorie avec un graphique et un tableau.
+
 "use client";
 
 import { useEffect, useState } from "react";
+//Importe les fonctions API depuis lib api
 import { api } from "@/lib/api";
 import {
   BarChart, Bar, XAxis, YAxis,
   CartesianGrid, Tooltip, ResponsiveContainer, Cell
 } from "recharts";
+//Tableau de couleurs utilisé pour les catégories.
+//Chaque catégorie reçoit une couleur différente.
 
 const COLORS = ["#22c55e", "#3b82f6", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#14b8a6"];
 
 export default function AnalyticsPage() {
+  //categoryData contient les dépenses par catégorie.
   const [categoryData, setCategoryData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
+//Ce bloc s’exécute au chargement de la page.
   useEffect(() => {
+    //une fonction asynchrone pour charger les données.
     const load = async () => {
       try {
+        //Appelle le backend via :
         const result = await api.getCategoryMargins();
         setCategoryData(result.data || []);
       } catch (error) {
@@ -48,6 +56,7 @@ export default function AnalyticsPage() {
         <ResponsiveContainer width="100%" height={350}>
           <BarChart data={categoryData} layout="vertical">
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            
             <XAxis type="number" tick={{ fontSize: 11 }} />
             <YAxis dataKey="category" type="category" tick={{ fontSize: 11 }} width={180} />
             <Tooltip />

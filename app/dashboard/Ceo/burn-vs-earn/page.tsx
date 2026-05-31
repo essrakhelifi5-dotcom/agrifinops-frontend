@@ -1,3 +1,4 @@
+//afficher les revenus, dépenses et profits par mois.
 "use client";
 
 import { useEffect, useState } from "react";
@@ -24,7 +25,7 @@ export default function BurnVsEarnPage() {
     };
     load();
   }, []);
-
+ //Le graphique :LineChart affiche trois courbes :revenus, dépenses et profit. 
   if (loading) return (
     <div className="flex items-center justify-center h-full">
       <div className="animate-spin w-10 h-10 border-4 border-green-500 border-t-transparent rounded-full"></div>
@@ -75,6 +76,7 @@ export default function BurnVsEarnPage() {
                 <td className="p-3 font-medium text-gray-700">{row.month}</td>
                 <td className="p-3 text-right text-green-600">${row.revenue.toFixed(2)}</td>
                 <td className="p-3 text-right text-blue-600">${row.expenses.toFixed(2)}</td>
+          
                 <td className={`p-3 text-right font-medium ${row.profit >= 0 ? 'text-green-600' : 'text-red-500'}`}>
                   ${row.profit.toFixed(2)}
                 </td>

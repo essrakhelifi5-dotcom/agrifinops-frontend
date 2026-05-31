@@ -1,3 +1,4 @@
+//role fichier:afficher les factures impayées par tranche de retard.
 "use client";
 
 import { useEffect, useState } from "react";
@@ -30,7 +31,7 @@ export default function ArAgingPage() {
       <div className="animate-spin w-10 h-10 border-4 border-green-500 border-t-transparent rounded-full"></div>
     </div>
   );
-
+  //reduce additionne tous les item.total.
   const totalAR = data.reduce((sum, item) => sum + item.total, 0);
 
   return (

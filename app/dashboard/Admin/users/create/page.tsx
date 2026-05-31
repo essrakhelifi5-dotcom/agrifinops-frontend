@@ -12,7 +12,7 @@ export default function CreateUserPage() {
     email: "",
     password: "",
     role: "CEO",
-    company: "S1",  // ✅ NOUVEAU
+    company: "S1",  
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -28,7 +28,7 @@ export default function CreateUserPage() {
         formData.email,
         formData.password,
         formData.role,
-        formData.company,  // ✅ AJOUT
+        formData.company,  
       );
       alert("Utilisateur créé avec succès");
       router.push("/dashboard/Admin/users");
@@ -121,7 +121,7 @@ export default function CreateUserPage() {
             </select>
           </div>
 
-          {/* ✅ Company */}
+          {/*  Company */}
           <div>
             <label className="block text-sm font-medium mb-2 flex items-center gap-2">
               <Building2 size={16} />

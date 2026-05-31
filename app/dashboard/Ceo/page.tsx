@@ -1,4 +1,8 @@
 "use client";
+//useState pour stocker les données du dashboard
+//useEffect pour charger les données au montage de la page.
+//recharts pour les graphiques.
+//lucide-react pour les icônes.
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
@@ -15,14 +19,18 @@ import {
 export default function CeoDashboard() {
 
   const [kpis, setKpis] = useState<any>(null);
+  //financialRatios : ratios avancés venant probablement d’un service Python
   const [financialRatios, setFinancialRatios] = useState<any>(null);
   const [predictions, setPredictions] = useState<any[]>([]);
  const [burnVsEarn, setBurnVsEarn] = useState<any>({ data: [], totalRevenue: 0, totalExpenses: 0, totalProfit: 0 });
+ //categoryMargins : dépenses par catégorie.
   const [categoryMargins, setCategoryMargins] = useState<any[]>([]);
   const [arAging, setArAging] = useState<any[]>([]);
   const [company, setCompany] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  //syncing : indique si une synchronisation QuickBooks est en cours.
   const [syncing, setSyncing] = useState(false);
+  //connected : indique si QuickBooks est connecté
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
@@ -31,6 +39,7 @@ export default function CeoDashboard() {
 
   const loadAllData = async () => {
     try {
+      
       const [kpisData, categoryData, arData] = await Promise.all([
         api.getKpis(),
         api.getCategoryMargins(),
@@ -70,6 +79,7 @@ export default function CeoDashboard() {
       setLoading(false);
     }
   };
+  //Le bouton Sync Now déclenche :
 
   const handleSync = async () => {
     setSyncing(true);
@@ -82,7 +92,7 @@ export default function CeoDashboard() {
       setSyncing(false);
     }
   };
-
+ //Cette fonction redirige l’utilisateur vers l’URL d’authentification QuickBooks.
   const connectQuickBooks = () => {
     window.location.href = api.getQuickBooksAuthUrl();
   };
@@ -91,7 +101,7 @@ export default function CeoDashboard() {
     if (amount >= 1000) return `${(amount / 1000).toFixed(1)}k $`;
     return `${amount.toFixed(2)} $`;
   };
-
+//Une fois les données chargées, elle affiche le dashboard.
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">

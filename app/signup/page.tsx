@@ -1,11 +1,13 @@
 "use client"
 
 import { useState } from "react"
+//	Appeler le backend pour créer le compte
 import { api } from "@/lib/api"
 import { useRouter } from "next/navigation"
 
 export default function SignUpPage() {
   const router = useRouter()
+  //Le formulaire est stocké dans un seul état :
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,9 +17,11 @@ export default function SignUpPage() {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
-
+//Quand l’utilisateur clique sur Créer le compte, cette fonction est appelée 
   const handleSubmit = async (e: React.FormEvent) => {
+    //commence par empêcher le rechargement de la page
     e.preventDefault()
+    // elle remet les messages à zéro
     setError("")
     setSuccess(false)
     setLoading(true)

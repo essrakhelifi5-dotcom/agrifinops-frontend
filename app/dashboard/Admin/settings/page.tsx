@@ -9,11 +9,13 @@ export default function AdminSettingsPage() {
   const router = useRouter();
 
   useEffect(() => {
+    //récupère l’utilisateur depuis localStorage.
     const userData = localStorage.getItem("user");
     if (userData) {
       setUser(JSON.parse(userData));
     }
   }, []);
+  // fonction déconnexion 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");

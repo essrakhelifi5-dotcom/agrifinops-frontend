@@ -9,11 +9,12 @@ import {
 } from "lucide-react";
 
 interface User {
+  //décrit la forme d’un utilisateur.
   id: string;
   name: string;
   email: string;
   role: string;
-  company: string;  // ✅ AJOUT
+  company: string;  
   isActive: boolean;
   createdAt: string;
   invoiceCount: number;
@@ -24,6 +25,7 @@ export default function AdminUsersPage() {
   const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  //recherche par nom ou email
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [companyFilter, setCompanyFilter] = useState("all");  // ✅ NOUVEAU FILTRE
@@ -65,7 +67,7 @@ export default function AdminUsersPage() {
     }
   };
 
-  // ✅ FILTRAGE PAR SEARCH + ROLE + COMPANY
+  //  FILTRAGE PAR SEARCH + ROLE + COMPANY
   const filteredUsers = users.filter(user => {
     const matchesSearch = 
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -87,7 +89,7 @@ export default function AdminUsersPage() {
     }
   };
 
-  // ✅ BADGE COMPANY
+  //  BADGE COMPANY
   const getCompanyBadgeColor = (company: string) => {
     return company === 'S1' 
       ? 'bg-purple-100 text-purple-700' 
@@ -154,7 +156,7 @@ export default function AdminUsersPage() {
           </select>
         </div>
 
-        {/* ✅ Filtre Company */}
+        {/*  Filtre Company */}
         <div className="relative">
           <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <select
@@ -213,7 +215,7 @@ export default function AdminUsersPage() {
                     </span>
                   </td>
 
-                  {/* ✅ Company */}
+                  {/*  Company */}
                   <td className="p-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getCompanyBadgeColor(user.company)}`}>
                       {user.company}

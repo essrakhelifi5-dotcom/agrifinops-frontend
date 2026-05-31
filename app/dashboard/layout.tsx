@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+//Les icônes viennent de lucide-react :
 import {
   LayoutDashboard,
   TrendingUp,
@@ -19,7 +20,9 @@ import {
 import Chatbot from "../components/Chatbot";
 
 export default function DashboardLayout({
-  children,
+  //children représente la page affichée à l’intérieur du layout.
+//Par exemple, si tu es sur /dashboard/Admin/users, alors children contient la page users.
+children,
 }: {
   children: React.ReactNode;
 }) {
@@ -34,7 +37,9 @@ export default function DashboardLayout({
   }, []);
 
   useEffect(() => {
+    //Vérifie si l’utilisateur est connecté 
     const token = localStorage.getItem("token");
+    //Récupère les infos utilisateur depuis localStorage
     const userData = localStorage.getItem("user");
 
     if (!token) {
@@ -46,13 +51,14 @@ export default function DashboardLayout({
       setUser(JSON.parse(userData));
     }
   }, [router]);
-
+  //supprime les données de connexion puis redirige vers login
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     router.push("/login");
   };
-
+//Affiche un menu différent selon le rôle :
+//Admin voit :Statistiques Utilisateurs Dashboard 
   const getMenuItems = () => {
     if (user?.role === "Admin") {
       return [
@@ -89,6 +95,7 @@ export default function DashboardLayout({
   if (!mounted) return null;
 
   return (
+    //construit le layout responsive avec sidebar desktop/mobile.
     <div className="flex h-screen bg-gray-100">
       {/* HEADER MOBILE */}
       <div className="lg:hidden fixed top-0 left-0 right-0 bg-gray-900 text-white p-4 flex items-center justify-between z-50 shadow-lg">

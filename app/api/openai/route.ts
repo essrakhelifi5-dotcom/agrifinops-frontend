@@ -1,23 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server';
-import Groq from 'groq-sdk';
-
+import { NextRequest, NextResponse } from 'next/server';//	Next request Représente la requête reçue par l’API Next.js
+import Groq from 'groq-sdk';//	SDK utilisé pour appeler le modèle IA Groq
+//Cette ligne crée un client Groq avec une clé API stockée dans les variables d’environnement.
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-
+//Cette fonction est exécutée quand le frontend fait une requête 
 export async function POST(req: NextRequest) {
   try {
+    //Elle récupère les messages du chatbot et les données du dashboard envoyés par le frontend
     const { messages, dashboardData } = await req.json();
 
     // Construit le contexte dashboard si disponible
+    //Cette variable sert à transformer les données du dashboard en texte compréhensible pour l’IA.
     let dashboardContext = '';
 
     if (dashboardData?.kpis) {
       const k = dashboardData.kpis;
       dashboardContext += `
+      
 ═══════════════════════════════════════
 📊 DONNÉES RÉELLES DU DASHBOARD (temps réel)
 ═══════════════════════════════════════
-
-🔥 KPIs FINANCIERS :
+//Si les KPIs sont chargés, elle ajoute une section avec les chiffres clés :
+ KPIs FINANCIERS :
 - Burn Rate mensuel : ${k.burnRate} TND/mois (dépenses moyennes par mois)
 - Revenus mensuels moyens : ${k.monthlyRevenue} TND/mois
 - Quick Ratio : ${k.quickRatio} (ratio liquidité = revenus/dépenses, idéal > 1)
@@ -79,7 +82,7 @@ INSTRUCTIONS IMPORTANTES :
 Tu réponds TOUJOURS en français, de façon claire, structurée et professionnelle.
 Pour les analyses financières, utilise des emojis pour rendre la lecture plus facile.
 Tu peux répondre à TOUTES les questions, pas seulement celles liées à Agri-FinOps.`;
-
+// appelle le modèle IA de Groq en lui envoyant le system prompt (contexte et instructions) et les messages du chatbot (questions de l’utilisateur).
     const completion = await groq.chat.completions.create({
       model: 'llama-3.3-70b-versatile',
       messages: [
@@ -99,6 +102,7 @@ Tu peux répondre à TOUTES les questions, pas seulement celles liées à Agri-F
     console.error('ERREUR API:', message);
     return NextResponse.json(
       { content: `❌ Erreur: ${message}` },
+    
       { status: 500 }
     );
   }

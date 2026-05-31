@@ -1,3 +1,4 @@
+//cette page  affiche les statistiques générales du système
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,13 +8,14 @@ import { Users, TrendingUp, Database, CheckCircle, XCircle } from "lucide-react"
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
+//Quand la page s’ouvre, elle appelle loadStats
   useEffect(() => {
     loadStats();
   }, []);
 
   const loadStats = async () => {
     try {
+      //récupère les données depuis le backend
       const data = await api.getAdminStats();
       setStats(data);
     } catch (error) {
@@ -35,13 +37,14 @@ export default function AdminDashboard() {
   }
 
   const totalUsers = stats?.totalUsers || 0;
+  // la répartition des utilisateurs par rôle.
 
   const roleItems = [
     { label: "CEO",     count: stats?.ceoCount     || 0, color: "#22c55e" },
     { label: "Manager", count: stats?.managerCount  || 0, color: "#3b82f6" },
     { label: "Admin",   count: stats?.adminCount    || 0, color: "#8b5cf6" },
   ];
-
+//fficher la répartition des utilisateurs par company
   const companyItems = [
     { label: "S1", count: stats?.s1Count || 0, color: "#f59e0b" },
     { label: "S2", count: stats?.s2Count || 0, color: "#ec4899" },

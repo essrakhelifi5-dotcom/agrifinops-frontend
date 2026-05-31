@@ -12,14 +12,17 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [animated, setAnimated] = useState(false);
     const router = useRouter();
-
+//Quand la page s’ouvre :
+//elle attend 1.5 seconde ;
+//elle met animated à true ;
+//cela déclenche l’animation visuelle.
     useEffect(() => {
         const timer = setTimeout(() => {
             setAnimated(true);
         }, 1500);
         return () => clearTimeout(timer);
     }, []);
-
+//Quand l’utilisateur clique sur Se connecter, cette fonction est appelée :
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");

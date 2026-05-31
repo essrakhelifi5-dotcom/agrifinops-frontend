@@ -1,8 +1,14 @@
+//role fichier : le service central des appels API du frontend.
+// role :regrouper toutes les fonctions qui communiquent avec le backend : login, signup, dashboard,
+//Cette ligne définit l’adresse du backend.
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Fonction utilitaire : Headers avec JWT
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//Cette fonction prépare les headers pour les routes protégées.
+//Elle récupère le token dans localStorage, puis ajoute :
+//Cela permet au backend de savoir quel utilisateur fait la requête.
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
   return {
@@ -10,12 +16,11 @@ const getAuthHeaders = () => {
     ...(token && { Authorization: `Bearer ${token}` }),
   };
 };
-
+//Le fichier exporte un objet api qui contient toutes les fonctions utilisées dans le projet.
 export const api = {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // 🔐 AUTHENTIFICATION
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
   // Inscription
   async signup(name: string, email: string, password: string, role: string) {
     const response = await fetch(`${API_URL}/auth/signup`, {
