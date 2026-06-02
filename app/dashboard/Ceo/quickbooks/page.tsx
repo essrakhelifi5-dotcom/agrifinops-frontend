@@ -1,13 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+//Objet contenant les appels vers le backend
 import { api } from "@/lib/api";
 import { RefreshCw, CheckCircle, XCircle } from "lucide-react";
 
 export default function QuickBooksPage() {
+  //Stocke les informations de l'entreprise QuickBooks.
   const [company, setCompany] = useState<any>(null);
+  //Indique si QuickBooks est connecté
   const [connected, setConnected] = useState(false);
+  //Indique si une synchronisation est en cours
   const [syncing, setSyncing] = useState(false);
+  //Contient le résultat de la synchronisation
   const [syncResult, setSyncResult] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -25,7 +30,7 @@ export default function QuickBooksPage() {
     };
     load();
   }, []);
-
+//user click sur le bouton Sync Now, cette fonction est appelée 
   const handleSync = async () => {
     setSyncing(true);
     setSyncResult(null);
@@ -53,7 +58,7 @@ export default function QuickBooksPage() {
     <div className="p-8 bg-gray-50 min-h-screen">
 
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-8">+
         <h1 className="text-2xl font-bold text-gray-800">QuickBooks</h1>
         <p className="text-gray-500 text-sm mt-1">Gestion de la connexion QuickBooks</p>
       </div>

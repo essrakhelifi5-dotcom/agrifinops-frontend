@@ -12,11 +12,16 @@ export default function SignUpPage() {
     name: "",
     email: "",
     password: "",
-    role: "CEO"
+    role: "CEO",
+    dateOfBirth:'',
+
+
+
   })
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+
 //Quand l’utilisateur clique sur Créer le compte, cette fonction est appelée 
   const handleSubmit = async (e: React.FormEvent) => {
     //commence par empêcher le rechargement de la page
@@ -30,8 +35,12 @@ export default function SignUpPage() {
       const response = await api.signup(
         formData.name,
         formData.email,
+
         formData.password,
         formData.role
+
+
+
       )
 
       // Sauvegarde le token
@@ -42,7 +51,8 @@ export default function SignUpPage() {
       setSuccess(true)
       
       // Réinitialise le formulaire
-      setFormData({ name: "", email: "", password: "", role: "CEO" })
+
+      setFormData({ name: "", email: "", password: "", role: "CEO", dateOfBirth:'' })
 
       // Redirection automatique après 3 secondes
       setTimeout(() => {
@@ -92,20 +102,35 @@ export default function SignUpPage() {
         )}
 
         {/* Form */}
+        
+        
         <form onSubmit={handleSubmit} className="space-y-4">
 
           <div>
             <label className="block text-sm font-medium mb-1">
+              
               Nom complet
             </label>
             <input
+            
               type="text"
+          
+               
+            
+               placeholder="Le nom doit contenir uniquement des lettres"
+                
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            
               required
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-              placeholder="Ex: Jean Dupont"
+              
             />
+              
+            
+            
+            
+
           </div>
 
           <div>
@@ -137,6 +162,19 @@ export default function SignUpPage() {
               minLength={6}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="Minimum 6 caractères"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              date de naissance
+            </label>
+            <input
+              type="date"
+              value={formData.dateOfBirth}
+              onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
+              required
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
 
@@ -174,3 +212,4 @@ export default function SignUpPage() {
     </div>
   )
 }
+

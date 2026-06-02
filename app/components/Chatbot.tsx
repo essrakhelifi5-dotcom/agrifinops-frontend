@@ -163,7 +163,7 @@ const Chat = () => {
       setMessages(prev => [...prev, {
         id: Date.now().toString(),
         role: 'assistant',
-        content: `✅ Données dashboard chargées !\n\n📊 **Résumé de vos KPIs :**\n• 🔥 Burn Rate : ${kpis.burnRate?.toFixed(2)} TND/mois\n• ⚡ Quick Ratio : ${kpis.quickRatio}\n• 🛤️ Runway : ${kpis.runway} mois\n• 💰 Revenus mensuels : ${kpis.monthlyRevenue?.toFixed(2)} TND\n• 📋 Factures impayées : ${kpis.totalAR?.toFixed(2)} TND (${kpis.unpaidInvoicesCount} factures)\n\nPosez-moi vos questions ou cliquez sur une suggestion ! 👇`,
+        content: `✅ Données dashboard chargées !\n\n📊 **Résumé de vos KPIs :**\n• 🔥 Burn Rate : ${kpis.burnRate?.toFixed(2)} $/mois\n• ⚡ Quick Ratio : ${kpis.quickRatio}\n• 🛤️ Runway : ${kpis.runway} mois\n• 💰 Revenus mensuels : ${kpis.monthlyRevenue?.toFixed(2)} $\n• 📋 Factures impayées : ${kpis.totalAR?.toFixed(2)} $ (${kpis.unpaidInvoicesCount} factures)\n\nPosez-moi vos questions ou cliquez sur une suggestion ! 👇`,
       }]);
     } catch {
       setMessages(prev => [...prev, {
